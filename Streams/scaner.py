@@ -1,5 +1,8 @@
+import os
 import socket
 import threading
+import pyprind
+
 
 print(threading.active_count())
 ports = []
@@ -28,16 +31,17 @@ t = [threading.Thread(target=open, args=[i]) for i in range(1, 100)]
 
 print(threading.active_count())
 a = 0
-while a  < 99:
+bar = pyprind.ProgBar(99)
+while a < 99:
     b = 0
     for i in range(0, 100):
     	b += done[i]
+    n = b - a
+    for i in range(n):
+        bar.update()
     a = b
-    print (a, "from 99")
 
 [t1.join() for t1 in t]
 for i in range (0, 100):
     if ports[i] == 1:
         print ("Port ", i + 1, "opened")
-    else:
-        print ("Port ", i + 1, "not opened")
